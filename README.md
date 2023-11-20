@@ -14,7 +14,10 @@ Henry to Discord Bot stworzony przez zespół **Henry's Development Team** w cel
 
 Aby zainstalować Henry'ego, wykonaj poniższe kroki:
 
-*kiedyś dodamy (*^_^*)*
+1. Pobierz Disord.py
+`pip install discord.py`
+*Potrzebujesz wersji Python 3.8.0 lub poniżej*
+2. 
 
 ## Zespół
 
