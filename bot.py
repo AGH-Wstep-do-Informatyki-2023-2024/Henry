@@ -13,7 +13,7 @@ async def on_ready():
     print(f'Zalogowano jako {bot.user.name}')
 
     # Wysłanie wiadomości powitalnej
-    channel_id = 123213123123123123  # Zastąp swoim ID kanału
+    channel_id = 1176270133338066994  # Zastąp swoim ID kanału
     channel = bot.get_channel(channel_id)
 
     if channel:
@@ -21,4 +21,4 @@ async def on_ready():
         await channel.send("Cześć, jestem gotowy!")
 
 # Uruchom bota
-bot.run('WASZ TOKEN BOTA')
+bot.run('MTE3NjI1MjQzOTM5ODE5MTIwNQ.GPxO_3.S2pNn7fchNHuzFK7bJjNYoC7kN57AN-U5zkcZw')
