@@ -1,9 +1,10 @@
-# DISCORD
+# Discord
 import discord
 from discord.ext import commands
 
-# RESZTA BIBLIOTEK
+# Reszta istotnych bibliotek
 import asyncio
+import datetime
 
 intents = discord.Intents.all()
 intents.messages = True
@@ -24,23 +25,64 @@ async def on_ready():
         # Wyślij wiadomość na określony kanał
         await channel.send("Cześć, jestem gotowy!")
 
-# Komenda do usuwania wiadomości
+# KOMENDA hm!usun
 @bot.command(name='usun', help='Usuwa określoną liczbę wiadomości.')
 async def usun(ctx, amount=5):
-    # Sprawdź, czy użytkownik, który używa komendy, ma odpowiednie uprawnienia
     if ctx.message.author.guild_permissions.manage_messages:
-        # Usuń wiadomości
         await ctx.channel.purge(limit=amount + 1)
         await ctx.send(f'Usunięto {amount} wiadomości.')
-        # Poczekaj 3 sekundy
         await asyncio.sleep(3)
-        # Usuń wiadomość informacyjną
         await ctx.channel.purge(limit=1)
     else:
         await ctx.send('Nie masz wystarczających uprawnień do użycia tej komendy.')
 
+# KOMENDA hm!kolos
+kolokwium_plik = 'dane/kolokwium.txt'        
 
+@bot.command(name='kolos')
+async def kolowium(ctx):
+    events = load_events()
+    
+    if not events:
+        await ctx.send("Brak kolosów!")
+    else:
+        embed=discord.Embed(title="**Nadchodzące kolosy 😈**", color=0xe95858)
+        upcoming_events = get_upcoming_events(events, 5)
+        for event in upcoming_events:
+            embed.add_field(name=f"{event}", value="", inline=False)
+        await ctx.send(embed=embed)
 
+# Funkcja do wczytywania kolosów z pliku
+def load_events():
+    try:
+        with open(kolokwium_plik, 'r', encoding='utf-8') as file:
+            events = file.readlines()
+        return [event.strip() for event in events]
+    except FileNotFoundError:
+        return []
+    
+# Funkcja do sprawdzania i zwracania nadchodzących kolosów
+def get_upcoming_events(events, count):
+    upcoming_events = []
+    today = datetime.datetime.today()
+    
+    for event in events:
+        parts = event.split(' - ')
+        if len(parts) == 2:
+            date_str = parts[0].strip()
+            event_name = parts[1].strip()
+            
+            try:
+                event_datetime = datetime.datetime.strptime(date_str, '%d.%m.%Y %H:%M')
+                if event_datetime >= today:
+                    upcoming_events.append((event_datetime, f"{date_str} - {event_name}"))
+            except ValueError:
+                pass
+    
+    upcoming_events.sort(key=lambda x: x[0])
+    return [event[1] for event in upcoming_events[:count]]
+
+# Reszta komend przyszłości ;-)
 
 # Uruchom bota
-bot.run('MTE3NjI1MjQzOTM5ODE5MTIwNQ.GQQ8tA.U1fyKzJ8ijTndGB9pFpAvvGqxuZ370a5PqDM14')
+bot.run('TOKEN')
